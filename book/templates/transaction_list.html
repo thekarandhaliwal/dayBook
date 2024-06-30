@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container mt-4">
+        <h2>Transaction List</h2><hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Main Category</th>
+                    <th>Sub Category</th>
+                    <th>Receipts</th>
+                    <th>Payments</th>
+                    <th>Currency</th>
+                    <th>File</th>
+                    <th>Action</th>
+                    <th>Edit</th>
+                    <th>Approval</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.date }}</td>
+                    <td>{{ transaction.description }}</td>
+                    <td>{{ transaction.main_category }}</td>
+                    <td>{{ transaction.sub_category }}</td>
+                    <td>{{ transaction.receipts }}</td>
+                    <td>{{ transaction.payments }}</td>
+                    <td>{{ transaction.currency }}</td>
+                    <td>
+                        {% if transaction.file %}
+                            <a href="{{ transaction.file.url }}" target="_blank">Download</a>
+                        {% else %}
+                            No file attached
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form action="{% url 'delete_transaction' transaction.pk %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{% url 'edit_transaction' transaction.pk %}" method="GET">
+                            <button type="submit" class="btn btn-primary">Edit</button>
+                        </form>
+                    </td>
+                    <td>
+                        {% if not transaction.approved %}
+                        <form action="{% url 'send_for_approval' transaction.pk %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">Approval</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
