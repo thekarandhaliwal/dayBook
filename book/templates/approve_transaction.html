@@ -1,0 +1,71 @@
+
+{% extends 'base.html' %}
+{% comment %}
+
+<!-- {% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Review Transaction</h2><hr>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="text" class="form-control" id="date" value="{{ transaction.date }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="description" value="{{ transaction.description }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label for="receipts" class="form-label">Receipts</label>
+            <input type="text" class="form-control" id="receipts" value="{{ transaction.receipts }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label for="payments" class="form-label">Payments</label>
+            <input type="text" class="form-control" id="payments" value="{{ transaction.payments }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label for="comments" class="form-label">Comments</label>
+            <textarea class="form-control" id="comments" name="comments"></textarea>
+        </div>
+        <button type="submit" name="action" value="approve" class="btn btn-success">Approve</button>
+        <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
+    </form>
+</div>
+{% endblock %} -->
+
+<!-- approve_transaction.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Approve Transaction</h2><hr>
+    <p>Are you sure you want to approve the transaction?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">Approve</button>
+        <a href="{% url 'manager_dashboard' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
+{% endcomment %}
+
+<!-- approve_transaction.html -->
+
+{% block content %}
+<h2>Approve Transaction</h2>
+<p>Transaction Details: {{ transaction.details }}</p>
+<form action="{% url 'approve_transaction' transaction.pk %}" method="post">
+    {% csrf_token %}
+    <label for="action">Action:</label>
+    <select name="action" id="action">
+        <option value="approve">Approve</option>
+        <option value="reject">Reject</option>
+    </select>
+    <br>
+    <label for="comments">Comments:</label><br>
+    <textarea id="comments" name="comments"></textarea>
+    <br><br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}

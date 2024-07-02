@@ -112,10 +112,36 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_URL = 'login'
 
-LOGIN_REDIRECT_URL = 'index'
-LOGOUT_REDIRECT_URL = 'login'
+# LOGIN_REDIRECT_URL = 'index'
+# LOGOUT_REDIRECT_URL = 'login'
 
+LOGIN_REDIRECT_URL = '/'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        '': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/

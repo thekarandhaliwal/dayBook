@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% comment %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Accountant Dashboard</h2>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Receipts</th>
+                <th>Payments</th>
+                <th>Approval Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.date }}</td>
+                <td>{{ transaction.description }}</td>
+                <td>{{ transaction.receipts }}</td>
+                <td>{{ transaction.payments }}</td>
+                <td>{{ transaction.approval_status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+{% endcomment %}
+<!-- accountant_dashboard.html -->
+{% block content %}
+<h2>Accountant Dashboard</h2>
+<a href="{% url 'create_entry' %}" class="btn btn-primary">Create Entry</a>
+
+<!-- Display Transaction List -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Details</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transaction in transactions %}
+        <tr>
+            <td>{{ transaction.pk }}</td>
+            <td>{{ transaction.details }}</td>
+            <td>
+                {% if transaction.approved %}
+                    Approved
+                {% else %}
+                    <form action="{% url 'send_for_approval' transaction.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-warning">Send for Approval</button>
+                    </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Display Form for Creating New Transactions -->
+<div>
+    <h3>Create New Transaction</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+</div>
+
+{% endblock %}
